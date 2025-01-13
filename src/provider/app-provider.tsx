@@ -2,13 +2,11 @@
 
 import React, { useState } from "react";
 import {
-  useQuery,
-  useMutation,
-  useQueryClient,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { ThemeProvider } from "./theme-provider";
+import { Toaster, toast } from 'sonner';
 
 const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [queryClient] = useState(() => new QueryClient());
@@ -23,6 +21,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
       <QueryClientProvider client={queryClient}>
         <div>{children}</div>
       </QueryClientProvider>
+      <Toaster richColors />
     </ThemeProvider>
   );
 };

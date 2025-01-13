@@ -12,12 +12,24 @@ import {
 } from "@/components/ui/select";
 import { createNotebook, fetchNotebooks } from "@/actions/notebook";
 import { useQuery } from "@tanstack/react-query";
-import { AlignJustify, Check, LayoutGrid, Plus } from "lucide-react";
-import NotebookCard from "./_components/notebook-card";
+import { AlignJustify, Check, LayoutGrid } from "lucide-react";
+import NotebookCard from "./_components/NoteBookCard";
 
 import { Notebook } from "@prisma/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export default function Home() {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: createNotebook,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notebooks"] });
+      toast.success("笔记本创建成功");
+    },
+  });
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["notebooks"],
     queryFn: async () => await fetchNotebooks(),
@@ -41,7 +53,7 @@ export default function Home() {
           <h3 className="text-xl">我的笔记本</h3>
           <div className="w-full mt-2 border-b">{""}</div>
           <div className="flex justify-between items-center p-2">
-            <Button size="lg" variant={"default"} className="bg-blue-700">
+            <Button size="lg" variant={"default"} className="bg-blue-700" onClick={() => mutation.mutate({title: "新建笔记本"})}>
               <span className=" dark:text-white">新建</span>
             </Button>
 
