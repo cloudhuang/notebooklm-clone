@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <AppProvider>
           <Header />
-          <main className="p-4 mt-16 calc(100vh - 4rem) overflow-auto">
+          <main className="p-4 mt-16 calc(100vh - 4rem) bg-gray-200 dark:bg-gray-800 overflow-auto">
             {children}
           </main>
         </AppProvider>

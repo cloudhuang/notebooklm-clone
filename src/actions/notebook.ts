@@ -6,6 +6,14 @@ export async function fetchNotebooks() {
   return prisma.notebook.findMany();
 }
 
+export async function fetchNotebookById(id: string) {
+  return prisma.notebook.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
 export async function createNotebook({ title }: { title: string }) {
   return prisma.notebook.create({
     data: {

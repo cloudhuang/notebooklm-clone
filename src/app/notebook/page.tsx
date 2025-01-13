@@ -75,7 +75,7 @@ export default function Home() {
               </div>
               <div className="flex items-center p-2 dark:text-white">
                 <Select defaultValue="recent">
-                  <SelectTrigger className="w-[100px]">
+                  <SelectTrigger className="w-[100px] border-gray-400">
                     <SelectValue placeholder="最近" />
                   </SelectTrigger>
                   <SelectContent>
