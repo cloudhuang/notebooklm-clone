@@ -26,7 +26,7 @@ export async function updateNotebook({
       id,
     },
     data: {
-      title,
+      title: title || "未命名笔记本",
     },
   });
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   AlertDialog,
@@ -32,10 +34,11 @@ const DeleteNotebookDialog = ({
   const mutation = useMutation({
     mutationFn: deleteNotebook,
     onSuccess: () => {
-      // Invalidate and refetch
+      toast.success(`笔记本"${notebookTitle}"已删除`);
       queryClient.invalidateQueries({ queryKey: ["notebooks"] });
     },
   });
+  
   return (
     <AlertDialog open={isOpen} onOpenChange={setOpen}>
       <AlertDialogTrigger></AlertDialogTrigger>
@@ -53,8 +56,6 @@ const DeleteNotebookDialog = ({
               mutation.mutate({
                 id: notebookId,
               });
-
-              toast.success(`笔记本"${notebookTitle}"已删除`);
             }}
           >
             确认

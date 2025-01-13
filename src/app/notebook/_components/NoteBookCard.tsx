@@ -1,10 +1,7 @@
+"use client";
+
 import React, { useState } from "react";
-import {
-  Card,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,10 +20,13 @@ import {
 import { Notebook } from "@prisma/client";
 import Moment from "react-moment";
 import DeleteNotebookDialog from "./DeleteNotebookDialog";
+import UpdateNotebookDialog from "./UpdateNotebookDialog";
 
 function NotebookCard({ notebook }: { notebook: Notebook }) {
   const [deleteNotebookDialogOpen, setDeleteNotebookDialogOpen] =
     useState(false);
+
+  const [updateNotebookDialog, setUpdateNotebookDialog] = useState(false);
 
   return (
     <>
@@ -44,6 +44,12 @@ function NotebookCard({ notebook }: { notebook: Notebook }) {
                 notebookId={notebook.id}
                 notebookTitle={notebook.title}
               />
+              <UpdateNotebookDialog
+                isOpen={updateNotebookDialog}
+                setOpen={setUpdateNotebookDialog}
+                notebookId={notebook.id}
+                notebookTitle={notebook.title}
+              />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div className="rounded-full hover:cursor-pointer hover:bg-gray-100 p-2">
@@ -54,7 +60,9 @@ function NotebookCard({ notebook }: { notebook: Notebook }) {
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={() => setUpdateNotebookDialog((prev) => !prev)}
+                  >
                     <div className="flex items-center gap-1 hover:cursor-pointer">
                       <Button variant="ghost" size="sm">
                         <Pencil />
