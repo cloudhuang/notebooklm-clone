@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -8,47 +10,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { createNotebook, fetchNotebooks } from "@/actions/notebook";
+import { useQuery } from "@tanstack/react-query";
 import { AlignJustify, Check, LayoutGrid, Plus } from "lucide-react";
-import Notebook from "./_components/notebook";
+import NotebookCard from "./_components/notebook-card";
+
+import { Notebook } from "@prisma/client";
 
 export default function Home() {
-  const notebooks: Notebook[] = [
-    {
-      id: "1",
-      title: "Notebook 1",
-      content: "This is the content of Notebook 1.",
-      createdAt: "2023-08-01",
-      updatedAt: "2023-08-01",
-    },
-    {
-      id: "2",
-      title: "Notebook 2",
-      content: "This is the content of Notebook 2.",
-      createdAt: "2023-08-02",
-      updatedAt: "2023-08-02",
-    },
-    {
-      id: "3",
-      title: "Notebook 3",
-      content: "This is the content of Notebook 2.",
-      createdAt: "2023-08-02",
-      updatedAt: "2023-08-02",
-    },
-    {
-      id: "4",
-      title: "Notebook 4",
-      content: "This is the content of Notebook 2.",
-      createdAt: "2023-08-02",
-      updatedAt: "2023-08-02",
-    },
-    {
-      id: "5",
-      title: "Notebook 5",
-      content: "This is the content of Notebook 2.",
-      createdAt: "2023-08-02",
-      updatedAt: "2023-08-02",
-    },
-  ];
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["notebooks"],
+    queryFn: async () => await fetchNotebooks(),
+  });
+
+  if (isLoading) return "Loading...";
+
+  if (isError) {
+    return <div>Error loading notebooks: {error?.message}</div>;
+  }
+
+  const notebooks = data as Notebook[];
 
   return (
     <main className="flex border w-full min-h-screen flex-col items-center justify-between p-24">
@@ -90,8 +71,10 @@ export default function Home() {
           </div>
         </div>
 
-        <div>
-          <Notebook notebooks={notebooks} />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-2">
+          {notebooks.map((notebook) => (
+            <NotebookCard key={notebook.id} notebook={notebook} />
+          ))}
         </div>
       </div>
     </main>
