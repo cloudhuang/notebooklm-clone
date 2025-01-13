@@ -21,6 +21,7 @@ import { Notebook } from "@prisma/client";
 import Moment from "react-moment";
 import DeleteNotebookDialog from "./DeleteNotebookDialog";
 import UpdateNotebookDialog from "./UpdateNotebookDialog";
+import Link from "next/link";
 
 function NotebookCard({ notebook }: { notebook: Notebook }) {
   const [deleteNotebookDialogOpen, setDeleteNotebookDialogOpen] =
@@ -94,7 +95,9 @@ function NotebookCard({ notebook }: { notebook: Notebook }) {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <CardTitle className="text-2xl">{notebook.title}</CardTitle>
+            <CardTitle className="text-2xl">
+              <Link href={`/notebook/${notebook.id}`}>{notebook.title}</Link>
+            </CardTitle>
           </CardHeader>
 
           <CardFooter className="flex justify-between">

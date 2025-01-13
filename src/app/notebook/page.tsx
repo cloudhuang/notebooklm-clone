@@ -18,15 +18,21 @@ import NotebookCard from "./_components/NoteBookCard";
 import { Notebook } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
+  const router = useRouter()
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: createNotebook,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["notebooks"] });
       toast.success("笔记本创建成功");
+      const {id} = data;
+
+      // Navigate to the newly created notebook using next.js navigation
+      router.push(`/notebook/${id}`);
     },
   });
 
@@ -44,7 +50,7 @@ export default function Home() {
   const notebooks = data as Notebook[];
 
   return (
-    <main className="flex border w-full min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex w-full min-h-screen flex-col items-center justify-between p-24">
       <div className="w-full mt-10 rounded-lg overflow-hidden">
         <h1 className="bg-gradient-to-r from-indigo-500 to-pink-600 bg-clip-text text-transparent inline-block font-bold text-3xl">
           欢迎使用 NotebookLM

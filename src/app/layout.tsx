@@ -16,14 +16,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
   return (
     <html lang="en">
       <body className={inter.className}>
         <AppProvider>
           <Header />
-          <main className="p-4 calc(100vh - 4rem) overflow-auto">
+          <main className="p-4 mt-16 calc(100vh - 4rem) overflow-auto">
             {children}
           </main>
         </AppProvider>
