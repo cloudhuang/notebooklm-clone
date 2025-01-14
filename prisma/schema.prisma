@@ -11,8 +11,21 @@ datasource db {
 }
 
 model Notebook {
-  id        String   @id @default(cuid())
+  id        String     @id @default(cuid())
   title     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Document  Document[]
+}
+
+model Document {
+  id         String   @id @default(cuid())
+  filename   String
+  path       String
+  filetype   String
+  size       Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  notebook   Notebook @relation(fields: [notebookId], references: [id])
+  notebookId String
 }

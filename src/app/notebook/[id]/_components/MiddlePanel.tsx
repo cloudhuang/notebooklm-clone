@@ -16,7 +16,7 @@ function MiddlePanel({ notebookId }: Props) {
   });
 
   if (isLoading) {
-    return <div className="p-2 shadow-sm">loading...</div>;
+    return <div className="p-2">loading...</div>;
   }
 
   if (error) {
