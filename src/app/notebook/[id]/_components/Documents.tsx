@@ -1,8 +1,8 @@
+import React, { useState } from "react";
 import { fetchDocuments } from "@/actions/document";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FileIcon, Loader } from "lucide-react";
-import React, { useState } from "react";
 import { toast } from "sonner";
 
 function Documents({ notebookId }: { notebookId: string }) {
@@ -19,7 +19,7 @@ function Documents({ notebookId }: { notebookId: string }) {
     return <div className="p-2 shadow-sm">error</div>;
   }
 
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<String[]>([]);
   const allSelected = selectedItems.length === data?.length;
   const isIndeterminate = selectedItems.length > 0 && !allSelected;
 
