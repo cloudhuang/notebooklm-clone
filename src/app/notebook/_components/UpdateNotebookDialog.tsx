@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { updateNotebook } from "@/actions/notebook";
+import { updateNotebookTitle } from "@/actions/notebook";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -33,7 +33,7 @@ const UpdateNotebookDialog = ({
   const [title, setTitle] = useState(notebookTitle);
 
   const mutation = useMutation({
-    mutationFn: updateNotebook,
+    mutationFn: updateNotebookTitle,
     onSuccess: () => {
       toast.success(`修改笔记本成功`);
       queryClient.invalidateQueries({ queryKey: ["notebooks"] });

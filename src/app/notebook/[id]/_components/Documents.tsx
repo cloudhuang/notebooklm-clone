@@ -41,6 +41,26 @@ function Documents({ notebookId }: { notebookId: string }) {
 
   return (
     <div className="mx-auto w-full max-w-2xl space-y-4 p-4">
+      <div className="flex items-center justify-between">
+        <label
+          htmlFor="select-all"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          选择所有来源
+        </label>
+        <Checkbox
+          id="select-all"
+          checked={allSelected}
+          data-state={
+            allSelected
+              ? "checked"
+              : isIndeterminate
+                ? "indeterminate"
+                : "unchecked"
+          }
+          onCheckedChange={toggleAll}
+        />
+      </div>
       {isLoading && (
         <Loader
           size={16}
@@ -50,26 +70,6 @@ function Documents({ notebookId }: { notebookId: string }) {
 
       {data && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <label
-              htmlFor="select-all"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              选择所有来源
-            </label>
-            <Checkbox
-              id="select-all"
-              checked={allSelected}
-              data-state={
-                allSelected
-                  ? "checked"
-                  : isIndeterminate
-                    ? "indeterminate"
-                    : "unchecked"
-              }
-              onCheckedChange={toggleAll}
-            />
-          </div>
           <div className="space-y-4 border-t pt-4">
             {data?.map((resource) => (
               <div

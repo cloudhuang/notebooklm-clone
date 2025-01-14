@@ -15,6 +15,7 @@ model Notebook {
   title     String
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  summary   String?
   Document  Document[]
 }
 

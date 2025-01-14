@@ -22,7 +22,7 @@ export async function createNotebook({ title }: { title: string }) {
   });
 }
 
-export async function updateNotebook({
+export async function updateNotebookTitle({
   id,
   title,
 }: {
@@ -43,6 +43,23 @@ export async function deleteNotebook({ id }: { id: string }) {
   return prisma.notebook.delete({
     where: {
       id,
+    },
+  });
+}
+
+export async function updateNotebookSummary({
+  id,
+  summary,
+}: {
+  id: string;
+  summary?: string | null;
+}) {
+  return prisma.notebook.update({
+    where: {
+      id,
+    },
+    data: {
+      summary,
     },
   });
 }
