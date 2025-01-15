@@ -6,12 +6,6 @@ import pdf from "pdf-parse-debugging-disabled";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 
 async function parsePdf(filePath: string): Promise<string> {
-  if (!fs.existsSync(filePath)) {
-    console.error("File not found:", filePath);
-  } else {
-    console.log("File exists!");
-  }
-
   const pdfBuffer = fs.readFileSync(filePath);
   const pdfData = await pdf(pdfBuffer);
 
