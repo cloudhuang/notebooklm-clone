@@ -29,10 +29,7 @@ function MiddlePanel({ notebookId }: Props) {
   }
 
   async function handleClick() {
-    const resp = await summarizePdf(
-      "/Users/lipinghuang/Desktop/sandbox/open-notebooklm/uploads/科技助力保险行业数字化转型_基于底层技术与具体运用分析.pdf",
-    );
-    console.log(resp);
+    
   }
 
   const notebook = data as Notebook;

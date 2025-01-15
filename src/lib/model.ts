@@ -63,9 +63,9 @@ export async function summarizePdf(filePath: string) {
     // 总结文本
     const summary = await summarizeChunks(chunks.slice(0, 1));
 
-    console.log("Summary:");
-    console.log(summary);
+    return summary;
   } catch (error) {
     console.error("Error summarizing PDF:", error);
+    return "";
   }
 }
