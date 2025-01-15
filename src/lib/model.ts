@@ -50,7 +50,6 @@ async function summarizeChunks(chunks: string[]): Promise<string> {
 }
 
 export async function summarizePdf(filePath: string) {
-  console.log("----> filePath", filePath);
   try {
     // 解析 PDF
     const text = await parsePdf(filePath);
