@@ -28,10 +28,6 @@ function MiddlePanel({ notebookId }: Props) {
     return <div className="p-2 shadow-sm">error</div>;
   }
 
-  async function handleClick() {
-    
-  }
-
   const notebook = data as Notebook;
 
   return (
@@ -39,10 +35,6 @@ function MiddlePanel({ notebookId }: Props) {
       <div className="flex w-full items-center justify-between rounded-lg border p-2 text-sm">
         <span>{notebook.title}</span>
         <div>{notebook.summary}</div>
-      </div>
-
-      <div>
-        <Button onClick={handleClick}>TEST</Button>
       </div>
     </div>
   );
