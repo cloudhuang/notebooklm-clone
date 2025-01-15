@@ -2,7 +2,7 @@
 
 import { OllamaEmbeddings } from "@langchain/ollama";
 
-const embeddings = new OllamaEmbeddings({
+export const embeddings = new OllamaEmbeddings({
   model: process.env.NEXT_PUBLIC_EMBEDDING_MODEL,
   baseUrl: process.env.NEXT_PUBLIC_OPENAI_BASE_URL,
 });

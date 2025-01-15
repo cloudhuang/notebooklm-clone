@@ -10,7 +10,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
 
 function Documents({ notebookId }: { notebookId: string }) {
   const queryClient = useQueryClient();
@@ -91,10 +90,14 @@ function Documents({ notebookId }: { notebookId: string }) {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="text-sm hover:cursor-pointer">{resource.filename}</div>
+                          <div className="text-sm hover:cursor-pointer">
+                            {resource.filename}
+                          </div>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p className="text-sm overflow-scroll max-w-[400px]">{resource.summary}</p>
+                          <p className="max-w-[400px] overflow-scroll text-sm">
+                            {resource.summary}
+                          </p>
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
