@@ -6,7 +6,13 @@ import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { uploadFiles } from "@/actions/fileutils";
-import { on } from "events";
+import { summarizePdf } from "@/lib/model";
+import { join } from "path";
+import { updateNotebookSummary } from "@/actions/notebook";
+import { updateDocumentSummary } from "@/actions/document";
+
+// get the upload dir path from the environment
+const UPLOAD_DIR = process.env.UPLOAD_DIR || "uploads";
 
 interface UploadingFile {
   id: string;
@@ -81,7 +87,16 @@ export default function FileUpload({
           ),
         );
 
-        onSuccess();
+        const { document } = result;
+
+        if (document) {
+          const summary = await summarizePdf(join(UPLOAD_DIR, document.path));
+          updateDocumentSummary({ id: document.id, summary: summary });
+          onSuccess();
+        } else {
+          const error = new Error("File path is undefined");
+          onError(error.message);
+        }
       } else {
         const error = new Error(result.error);
         onError(error.message);

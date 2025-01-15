@@ -20,7 +20,7 @@ export async function uploadFiles(notebookId: string, formData: FormData) {
     await writeFile(join(distPath, fileName), buffer);
 
     // create document
-    await createDocument({
+    const document = await createDocument({
       filename: fileName,
       path: fileName,
       filetype: fileName.split(".").pop() || "",
@@ -28,7 +28,7 @@ export async function uploadFiles(notebookId: string, formData: FormData) {
       notebookId,
     });
 
-    return { success: true, fileName: fileName };
+    return { success: true, document: document };
   } catch (error) {
     return { success: false, error: (error as Error).message };
   }

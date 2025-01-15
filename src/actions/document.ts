@@ -32,3 +32,20 @@ export async function createDocument({
     },
   });
 }
+
+export async function updateDocumentSummary({
+  id,
+  summary,
+}: {
+  id: string;
+  summary: string;
+}) {
+  return prisma.document.update({
+    where: {
+      id: id,
+    },
+    data: {
+      summary,
+    },
+  });
+}
