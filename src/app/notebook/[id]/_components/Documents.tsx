@@ -27,7 +27,7 @@ function Documents({ notebookId }: { notebookId: string }) {
     if (allSelected) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(data?.map((document) => document.id));
+      setSelectedItems(data?.map((document) => document.id) ?? []);
     }
   };
 
