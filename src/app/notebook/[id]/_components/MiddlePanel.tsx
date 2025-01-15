@@ -6,9 +6,7 @@ import { toast } from "sonner";
 import { fetchNotebookById } from "@/actions/notebook";
 import { Notebook } from "@prisma/client";
 import { Button } from "@/components/ui/button";
-import { OpenAIEmbeddings } from "@langchain/openai";
-import { embedQuery } from "@/lib/embedding";
-import { generateText } from "@/lib/model";
+import { generateText, summarizePdf } from "@/lib/model";
 
 interface Props {
   notebookId: string;
@@ -31,7 +29,9 @@ function MiddlePanel({ notebookId }: Props) {
   }
 
   async function handleClick() {
-    const resp = await generateText("hello");
+    const resp = await summarizePdf(
+      "/Users/lipinghuang/Desktop/sandbox/open-notebooklm/uploads/科技助力保险行业数字化转型_基于底层技术与具体运用分析.pdf",
+    );
     console.log(resp);
   }
 
