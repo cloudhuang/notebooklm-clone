@@ -21,7 +21,7 @@ async function splitText(text: string): Promise<string[]> {
   return await splitter.splitText(text);
 }
 
-export const llm = new Ollama({
+const llm = new Ollama({
   model: process.env.NEXT_PUBLIC_LLM_MODEL,
   baseUrl: process.env.NEXT_PUBLIC_OPENAI_BASE_URL,
 });
