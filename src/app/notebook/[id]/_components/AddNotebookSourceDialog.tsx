@@ -7,11 +7,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Header from "./Header";
-import { UploadIcon } from "lucide-react";
 import FileUpload from "@/components/file-upload";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
@@ -35,7 +32,6 @@ const AddNotebookSourceDialog = ({
     <Dialog
       open={isOpen}
       onOpenChange={() => {
-        // TODO
         setOpen(!isOpen);
       }}
     >

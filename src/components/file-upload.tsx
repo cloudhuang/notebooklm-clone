@@ -10,6 +10,7 @@ import { summarizePdf } from "@/lib/model";
 import { join } from "path";
 import { updateNotebookSummary } from "@/actions/notebook";
 import { updateDocumentSummary } from "@/actions/document";
+import { useQueryClient } from "@tanstack/react-query";
 
 // get the upload dir path from the environment
 const UPLOAD_DIR = process.env.UPLOAD_DIR || "uploads";
@@ -35,6 +36,8 @@ export default function FileUpload({
   onSuccess,
   onError,
 }: FileUploadProps) {
+  const queryClient = useQueryClient();
+
   const [isDragging, setIsDragging] = React.useState(false);
   const [uploadingFiles, setUploadingFiles] = React.useState<UploadingFile[]>(
     [],
@@ -87,12 +90,17 @@ export default function FileUpload({
           ),
         );
 
+        onSuccess();
+
         const { document } = result;
 
         if (document) {
           const summary = await summarizePdf(join(UPLOAD_DIR, document.path));
           updateDocumentSummary({ id: document.id, summary: summary });
-          onSuccess();
+
+          queryClient.invalidateQueries({
+            queryKey: ["documents", { notebookId }],
+          });
         } else {
           const error = new Error("File path is undefined");
           onError(error.message);

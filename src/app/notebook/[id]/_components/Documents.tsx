@@ -4,6 +4,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FileIcon, Loader } from "lucide-react";
 import { toast } from "sonner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
 function Documents({ notebookId }: { notebookId: string }) {
   const queryClient = useQueryClient();
@@ -14,7 +21,6 @@ function Documents({ notebookId }: { notebookId: string }) {
   });
 
   if (error) {
-    console.log(error);
     toast.error("获取文档失败");
     return <div className="p-2 shadow-sm">error</div>;
   }
@@ -82,7 +88,16 @@ function Documents({ notebookId }: { notebookId: string }) {
                     htmlFor={resource.id}
                     className="text-sm leading-tight peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    {resource.filename}
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="text-sm hover:cursor-pointer">{resource.filename}</div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="text-sm overflow-scroll max-w-[400px]">{resource.summary}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </label>
                 </div>
                 <Checkbox
