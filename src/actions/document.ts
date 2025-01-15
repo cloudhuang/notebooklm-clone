@@ -49,3 +49,11 @@ export async function updateDocumentSummary({
     },
   });
 }
+
+export async function deleteDocumentByNotebookId(notebookId: string) {
+  return prisma.document.deleteMany({
+    where: {
+      notebookId,
+    },
+  });
+}
