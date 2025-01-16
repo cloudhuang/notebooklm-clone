@@ -1,7 +1,7 @@
 services:
   db:
     hostname: 127.0.0.1
-    image: pgvector/pgvector:pg16
+    image: ankane/pgvector
     ports:
       - 5432:5432
     restart: always

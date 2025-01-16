@@ -1,5 +1,4 @@
 "use server";
-
 import { OllamaEmbeddings } from "@langchain/ollama";
 
 const embeddings = new OllamaEmbeddings({
