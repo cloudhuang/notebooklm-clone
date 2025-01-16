@@ -10,6 +10,8 @@ import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
 import { PromptTemplate } from "@langchain/core/prompts";
+import { index } from "langchain/indexes";
+import { PostgresRecordManager } from "@langchain/community/indexes/postgres";
 
 const config = {
   postgresConnectionOptions: {
@@ -31,6 +33,23 @@ const config = {
   distanceStrategy: "cosine" as DistanceStrategy,
 };
 
+// Create a new record manager
+const recordManagerConfig = {
+  postgresConnectionOptions: {
+    type: "postgres",
+    host: "127.0.0.1",
+    port: 5432,
+    user: "postgres",
+    password: "postgres",
+    database: "ai4ba",
+  },
+  tableName: "Embedding",
+};
+const recordManager = new PostgresRecordManager(
+  "ai4ba_namespace",
+  recordManagerConfig
+);
+
 const llm = new Ollama({
   model: "qwen2.5:7b",
   baseUrl: "http://127.0.0.1:11434",
@@ -42,6 +61,8 @@ const embeddings = new OllamaEmbeddings({
 });
 
 async function embedding() {
+  await recordManager.createSchema();
+
   const nike10kPdfPath =
     "/Users/lipinghuang/Downloads/科技助力保险行业数字化转型_基于底层技术与具体运用分析.pdf";
 
@@ -54,11 +75,20 @@ async function embedding() {
     chunkOverlap: 200,
   });
 
-  const split_text = await splitter.splitDocuments(docs);
+  const splitDocs = await splitter.splitDocuments(docs);
 
   const vectorStore = await PGVectorStore.initialize(embeddings, config);
 
-  await vectorStore.addDocuments(split_text);
+  // await vectorStore.addDocuments(split_text);
+  await index({
+    docsSource: splitDocs,
+    recordManager,
+    vectorStore,
+    options: {
+      cleanup: "incremental",
+      sourceIdKey: "source",
+    },
+  })
 }
 
 async function summary() {
@@ -134,6 +164,6 @@ async function query() {
   // console.log(response);
 }
 
-summary().then(() => {
+embedding().then(() => {
   console.log("done");
 });
