@@ -47,7 +47,7 @@ const recordManagerConfig = {
 };
 const recordManager = new PostgresRecordManager(
   "ai4ba_namespace",
-  recordManagerConfig
+  recordManagerConfig,
 );
 
 const llm = new Ollama({
@@ -63,10 +63,10 @@ const embeddings = new OllamaEmbeddings({
 async function embedding() {
   await recordManager.createSchema();
 
-  const nike10kPdfPath =
-    "/Users/lipinghuang/Downloads/科技助力保险行业数字化转型_基于底层技术与具体运用分析.pdf";
+  const pdfPath =
+    "/Users/lipinghuang/Downloads/Visual Collaboration Tools for teams building software.pdf";
 
-  const loader = new PDFLoader(nike10kPdfPath);
+  const loader = new PDFLoader(pdfPath);
 
   const docs = await loader.load();
 
@@ -80,15 +80,17 @@ async function embedding() {
   const vectorStore = await PGVectorStore.initialize(embeddings, config);
 
   // await vectorStore.addDocuments(split_text);
-  await index({
-    docsSource: splitDocs,
-    recordManager,
-    vectorStore,
-    options: {
-      cleanup: "incremental",
-      sourceIdKey: "source",
-    },
-  })
+  console.log(
+    await index({
+      docsSource: splitDocs,
+      recordManager,
+      vectorStore,
+      options: {
+        cleanup: "incremental",
+        sourceIdKey: "source",
+      },
+    }),
+  );
 }
 
 async function summary() {
@@ -101,7 +103,7 @@ async function summary() {
 
   // Define prompt
   const prompt = PromptTemplate.fromTemplate(
-    "Summarize the following text and return only the summary in a single paragraph. Do not include any additional text or formatting. Only return the summary.: {context}"
+    "Summarize the following text and return only the summary in a single paragraph. Do not include any additional text or formatting. Only return the summary.: {context}",
   );
 
   // Instantiate
