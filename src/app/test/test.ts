@@ -9,6 +9,7 @@ import { pull } from "langchain/hub";
 import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
+import { PromptTemplate } from "@langchain/core/prompts";
 
 const config = {
   postgresConnectionOptions: {
@@ -60,9 +61,34 @@ async function embedding() {
   await vectorStore.addDocuments(split_text);
 }
 
+async function summary() {
+  const pdfPath =
+    "/Users/lipinghuang/Downloads/科技助力保险行业数字化转型_基于底层技术与具体运用分析.pdf";
+
+  const loader = new PDFLoader(pdfPath);
+
+  const docs = await loader.load();
+
+  // Define prompt
+  const prompt = PromptTemplate.fromTemplate(
+    "Summarize the following text and return only the summary in a single paragraph. Do not include any additional text or formatting. Only return the summary.: {context}"
+  );
+
+  // Instantiate
+  const chain = await createStuffDocumentsChain({
+    llm: llm,
+    outputParser: new StringOutputParser(),
+    prompt,
+  });
+
+  // Invoke
+  const result = await chain.invoke({ context: docs });
+
+  console.log("Summary: \n");
+  console.log(result);
+}
+
 async function query() {
-
-
   const vectorStore = await PGVectorStore.initialize(embeddings, config);
 
   // const result = await vectorStore.similaritySearch(
@@ -108,6 +134,6 @@ async function query() {
   // console.log(response);
 }
 
-query().then(() => {
+summary().then(() => {
   console.log("done");
 });
