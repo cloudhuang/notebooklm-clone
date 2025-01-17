@@ -5,6 +5,7 @@ import { CSVLoader } from "@langchain/community/document_loaders/fs/csv";
 import { TextLoader } from "langchain/document_loaders/fs/text";
 import { PPTXLoader } from "@langchain/community/document_loaders/fs/pptx";
 import { EPubLoader } from "@langchain/community/document_loaders/fs/epub";
+import { BrowserbaseLoader } from "@langchain/community/document_loaders/web/browserbase";
 
 /**
  * 根据文件后缀名返回对应的 loader 函数
@@ -12,35 +13,40 @@ import { EPubLoader } from "@langchain/community/document_loaders/fs/epub";
  * @returns {() => BaseDocumentLoader} - 返回加载文件的对应 loader 函数
  * @throws {Error} 如果文件类型不支持，则抛出错误
  */
-export async function getLoader(filePath: string) {
+export async function getLoader(filePathOrUrl: string) {
+  if (
+    filePathOrUrl.startsWith("http://") ||
+    filePathOrUrl.startsWith("https://")
+  ) {
+    return new BrowserbaseLoader(["https://example.com"], {
+      textContent: true,
+    });
+  }
   // 提取文件后缀名
-  const fileExtension = filePath.split('.').pop()?.toLowerCase();
+  const fileExtension = filePathOrUrl.split(".").pop()?.toLowerCase();
 
   if (!fileExtension) {
-    throw new Error('Invalid file path: Unable to determine file extension.');
+    throw new Error("Invalid file path: Unable to determine file extension.");
   }
 
   switch (fileExtension) {
-    case 'csv':
+    case "csv":
       return new CSVLoader(filePath);
-    case 'json':
+    case "json":
       return new JSONLoader(filePath);
-    case 'txt':
+    case "txt":
       return new TextLoader(filePath);
-    case 'pdf':
+    case "pdf":
       return new PDFLoader(filePath);
-    case 'doc':
-      return new DocxLoader(
-        filePath,
-        {
-          type: "doc",
-        }
-      );
-    case 'docx':
+    case "doc":
+      return new DocxLoader(filePath, {
+        type: "doc",
+      });
+    case "docx":
       return new DocxLoader(filePath);
-    case 'pptx':
+    case "pptx":
       return new PPTXLoader(filePath);
-    case 'epub':
+    case "epub":
       return new EPubLoader(filePath);
     default:
       throw new Error(`Unsupported file type: ${fileExtension}`);
