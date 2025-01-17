@@ -11,6 +11,24 @@ import { PGVectorStore } from "@langchain/community/vectorstores/pgvector";
 import { pull } from "langchain/hub";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { index } from "langchain/indexes";
+import { Document } from "@langchain/core/documents";
+import { updateDocumentSummary } from "@/actions/document";
+
+export async function summarizeText(docs: Document[]) {
+  const prompt = PromptTemplate.fromTemplate(
+    "Summarize the following text and return only the summary in a single paragraph. Do not include any additional text or formatting. Only return the summary.: {context}",
+  );
+
+  // Instantiate
+  const chain = await createStuffDocumentsChain({
+    llm: llm,
+    outputParser: new StringOutputParser(),
+    prompt,
+  });
+
+  // Invoke
+  return await chain.invoke({ context: docs});
+}
 
 export async function summarizeDocument(filePath: string) {
   const loader = new PDFLoader(filePath);
@@ -58,7 +76,7 @@ export async function query(text: string) {
   });
 }
 
-export async function indexDocument(path: string) {
+export async function indexDocument(id:string, path: string) {
   await recordManager.createSchema();
 
   const loader = new PDFLoader(path);
@@ -71,6 +89,9 @@ export async function indexDocument(path: string) {
   });
 
   const splitDocs = await splitter.splitDocuments(docs);
+
+  const summary =  await summarizeText(splitDocs.slice(0, 3))
+  await updateDocumentSummary({ id: id, summary: summary });
 
   const vectorStore = await PGVectorStore.initialize(embeddings, config);
 

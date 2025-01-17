@@ -6,9 +6,7 @@ import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { uploadFiles } from "@/actions/fileutils";
-import { summarizePdf } from "@/lib/model";
 import { join } from "path";
-import { updateDocumentSummary } from "@/actions/document";
 import { useQueryClient } from "@tanstack/react-query";
 import { indexDocument } from "@/actions/rag";
 
@@ -95,9 +93,7 @@ export default function FileUpload({
         const { document } = result;
 
         if (document) {
-          indexDocument(join(UPLOAD_DIR, document.path))
-          const summary = await summarizePdf(join(UPLOAD_DIR, document.path));
-          updateDocumentSummary({ id: document.id, summary: summary });
+          await indexDocument(document.id, join(UPLOAD_DIR, document.path))
 
           queryClient.invalidateQueries({
             queryKey: ["documents", { notebookId }],
