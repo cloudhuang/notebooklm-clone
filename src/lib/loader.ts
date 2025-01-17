@@ -3,6 +3,8 @@ import { JSONLoader } from "langchain/document_loaders/fs/json";
 import { DocxLoader } from "@langchain/community/document_loaders/fs/docx";
 import { CSVLoader } from "@langchain/community/document_loaders/fs/csv";
 import { TextLoader } from "langchain/document_loaders/fs/text";
+import { PPTXLoader } from "@langchain/community/document_loaders/fs/pptx";
+import { EPubLoader } from "@langchain/community/document_loaders/fs/epub";
 
 /**
  * 根据文件后缀名返回对应的 loader 函数
@@ -36,6 +38,10 @@ export async function getLoader(filePath: string) {
       );
     case 'docx':
       return new DocxLoader(filePath);
+    case 'pptx':
+      return new PPTXLoader(filePath);
+    case 'epub':
+      return new EPubLoader(filePath);
     default:
       throw new Error(`Unsupported file type: ${fileExtension}`);
   }
