@@ -1,50 +1,16 @@
-import {
-  DistanceStrategy,
-  PGVectorStore,
-} from "@langchain/community/vectorstores/pgvector";
+import { PGVectorStore } from "@langchain/community/vectorstores/pgvector";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { Ollama, OllamaEmbeddings } from "@langchain/ollama";
 import { pull } from "langchain/hub";
 import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { ChatPromptTemplate, PromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
-import { PromptTemplate } from "@langchain/core/prompts";
 import { index } from "langchain/indexes";
 import { PostgresRecordManager } from "@langchain/community/indexes/postgres";
 
-const config = {
-  postgresConnectionOptions: {
-    type: "postgres",
-    host: "127.0.0.1",
-    port: 5432,
-    user: "postgres",
-    password: "postgres",
-    database: "ai4ba",
-  },
-  tableName: "Embedding",
-  columns: {
-    idColumnName: "id",
-    vectorColumnName: "vector",
-    contentColumnName: "content",
-    metadataColumnName: "metadata",
-  },
-  // supported distance strategies: cosine (default), innerProduct, or euclidean
-  distanceStrategy: "cosine" as DistanceStrategy,
-};
+import { config, recordManagerConfig } from "@/lib/pg-vector-config";
 
-// Create a new record manager
-const recordManagerConfig = {
-  postgresConnectionOptions: {
-    type: "postgres",
-    host: "127.0.0.1",
-    port: 5432,
-    user: "postgres",
-    password: "postgres",
-    database: "ai4ba",
-  },
-  tableName: "Embedding",
-};
 const recordManager = new PostgresRecordManager(
   "ai4ba_namespace",
   recordManagerConfig,

@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button";
 import { uploadFiles } from "@/actions/fileutils";
 import { summarizePdf } from "@/lib/model";
 import { join } from "path";
-import { updateNotebookSummary } from "@/actions/notebook";
 import { updateDocumentSummary } from "@/actions/document";
 import { useQueryClient } from "@tanstack/react-query";
+import { indexDocument } from "@/actions/rag";
 
 // get the upload dir path from the environment
 const UPLOAD_DIR = process.env.UPLOAD_DIR || "uploads";
@@ -95,6 +95,7 @@ export default function FileUpload({
         const { document } = result;
 
         if (document) {
+          indexDocument(join(UPLOAD_DIR, document.path))
           const summary = await summarizePdf(join(UPLOAD_DIR, document.path));
           updateDocumentSummary({ id: document.id, summary: summary });
 

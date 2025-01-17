@@ -1,11 +1,12 @@
 "use server";
-import { OllamaEmbeddings } from "@langchain/ollama";
 
-const embeddings = new OllamaEmbeddings({
-  model: process.env.NEXT_PUBLIC_EMBEDDING_MODEL,
-  baseUrl: process.env.NEXT_PUBLIC_OPENAI_BASE_URL,
-});
+import dotenv from "dotenv";
+import { embeddings } from "@/lib/ollama";
+
+dotenv.config();
 
 export async function embedQuery(text: string) {
   return embeddings.embedQuery(text);
 }
+
+export async function indexDocument(path: string[]) {}

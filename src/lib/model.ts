@@ -1,9 +1,9 @@
 "use server";
 
-import { Ollama } from "@langchain/ollama";
 import fs from "fs";
 import pdf from "pdf-parse-debugging-disabled";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { llm } from "@/lib/ollama";
 
 async function parsePdf(filePath: string): Promise<string> {
   const pdfBuffer = fs.readFileSync(filePath);
@@ -20,11 +20,6 @@ async function splitText(text: string): Promise<string[]> {
 
   return await splitter.splitText(text);
 }
-
-const llm = new Ollama({
-  model: process.env.NEXT_PUBLIC_LLM_MODEL,
-  baseUrl: process.env.NEXT_PUBLIC_OPENAI_BASE_URL,
-});
 
 export async function generateText(text: string) {
   return llm.invoke(text);
@@ -50,8 +45,6 @@ export async function summarizePdf(filePath: string) {
 
     // 分块处理
     const chunks = await splitText(text);
-
-    console.log("Chunks lenght:", chunks.length);
 
     // 总结文本
     const summary = await summarizeChunks(chunks.slice(0, 1));
