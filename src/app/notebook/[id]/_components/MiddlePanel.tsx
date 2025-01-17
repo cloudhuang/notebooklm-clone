@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { fetchNotebookById } from "@/actions/notebook";
 import { Notebook } from "@prisma/client";
+import { DocumentSource } from "@/app/notebook/_components/DocumentSource";
 
 interface Props {
   notebookId: string;
@@ -14,7 +15,7 @@ function MiddlePanel({ notebookId }: Props) {
   const queryClient = useQueryClient();
   const { isLoading, data, error } = useQuery({
     queryKey: ["notebook", { notebookId }],
-    queryFn: () => fetchNotebookById(notebookId),
+    queryFn: async () => await fetchNotebookById(notebookId),
   });
 
   if (isLoading) {
@@ -30,10 +31,17 @@ function MiddlePanel({ notebookId }: Props) {
 
   return (
     <div className="p-2">
-      <div className="flex w-full items-center justify-between rounded-lg border p-2 text-sm">
-        <span>{notebook.title}</span>
-        <div>{notebook.summary}</div>
-      </div>
+      {data && (
+        <div className="flex min-h-[200px] w-full items-center justify-between rounded-lg border p-5 text-sm">
+          <div>
+            <span className="block flex text-2xl">{notebook.title}</span>
+            <div>{notebook.summary || "summary"}</div>
+          </div>
+          <div className="relative bottom-0">
+            <DocumentSource notebookId={notebook.id} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

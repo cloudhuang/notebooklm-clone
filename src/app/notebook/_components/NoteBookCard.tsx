@@ -22,20 +22,13 @@ import Moment from "react-moment";
 import DeleteNotebookDialog from "./DeleteNotebookDialog";
 import UpdateNotebookDialog from "./UpdateNotebookDialog";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
-import { getDocumentsCountByNotebookId } from "@/actions/notebook";
+import { DocumentSource } from "@/app/notebook/_components/DocumentSource";
 
 function NotebookCard({ notebook }: { notebook: Notebook }) {
   const [deleteNotebookDialogOpen, setDeleteNotebookDialogOpen] =
     useState(false);
 
   const [updateNotebookDialog, setUpdateNotebookDialog] = useState(false);
-
-  const documentsCount = useQuery({
-    queryKey: ["notebook", notebook.id],
-    queryFn: async () =>  await getDocumentsCountByNotebookId(notebook.id)
-  });
-
   return (
     <>
       <div>
@@ -60,10 +53,10 @@ function NotebookCard({ notebook }: { notebook: Notebook }) {
               />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <div className="rounded-full hover:cursor-pointer hover:bg-gray-100 p-2">
+                  <div className="rounded-full p-2 hover:cursor-pointer hover:bg-gray-100">
                     <EllipsisVertical
                       size={12}
-                      className="w-6 h-6 rounded-full"
+                      className="h-6 w-6 rounded-full"
                     />
                   </div>
                 </DropdownMenuTrigger>
@@ -113,7 +106,7 @@ function NotebookCard({ notebook }: { notebook: Notebook }) {
                 {notebook.createdAt.toString()}
               </Moment>
             </p>
-            <p className="text-xs"> {documentsCount.data} 个来源</p>
+            <DocumentSource notebookId={notebook.id} />
           </CardFooter>
         </Card>
       </div>
