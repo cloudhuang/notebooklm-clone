@@ -6,14 +6,14 @@ dotenv.config();
 
 export const config = {
   postgresConnectionOptions: {
-    type: "postgres",
-    host: "127.0.0.1",
-    port: 5432,
-    user: "postgres",
-    password: "postgres",
-    database: "ai4ba",
+    type: process.env.DB_TYPE,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DATABASE,
   },
-  tableName: "Embedding",
+  tableName: process.env.DB_TABLE_NAME,
   columns: {
     idColumnName: "id",
     vectorColumnName: "vector",
@@ -26,14 +26,14 @@ export const config = {
 
 export const recordManagerConfig = {
   postgresConnectionOptions: {
-    type: "postgres",
-    host: "127.0.0.1",
-    port: 5432,
-    user: "postgres",
-    password: "postgres",
-    database: "ai4ba",
+    type: process.env.DB_TYPE,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DATABASE,
   },
-  tableName: "Embedding",
+  tableName: process.env.DB_TABLE_NAME,
 };
 
 export const recordManager = new PostgresRecordManager(

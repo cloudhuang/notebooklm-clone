@@ -72,6 +72,14 @@ export async function updateNotebookSummary({
   });
 }
 
+export async function getDocumentsCountByNotebookId(id: string) {
+  return prisma.document.count({
+    where: {
+      notebookId: id,
+    },
+  });
+}
+
 /**
  * 同步删除目录及其内容
  * @param {string} targetPath - 要删除的目录路径。

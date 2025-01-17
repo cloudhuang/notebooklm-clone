@@ -22,12 +22,19 @@ import Moment from "react-moment";
 import DeleteNotebookDialog from "./DeleteNotebookDialog";
 import UpdateNotebookDialog from "./UpdateNotebookDialog";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { getDocumentsCountByNotebookId } from "@/actions/notebook";
 
 function NotebookCard({ notebook }: { notebook: Notebook }) {
   const [deleteNotebookDialogOpen, setDeleteNotebookDialogOpen] =
     useState(false);
 
   const [updateNotebookDialog, setUpdateNotebookDialog] = useState(false);
+
+  const documentsCount = useQuery({
+    queryKey: ["notebook", notebook.id],
+    queryFn: async () =>  await getDocumentsCountByNotebookId(notebook.id)
+  });
 
   return (
     <>
@@ -106,7 +113,7 @@ function NotebookCard({ notebook }: { notebook: Notebook }) {
                 {notebook.createdAt.toString()}
               </Moment>
             </p>
-            <p className="text-xs"> 0 个来源</p>
+            <p className="text-xs"> {documentsCount.data} 个来源</p>
           </CardFooter>
         </Card>
       </div>
