@@ -31,23 +31,23 @@ export async function getLoader(filePathOrUrl: string) {
 
   switch (fileExtension) {
     case "csv":
-      return new CSVLoader(filePath);
+      return new CSVLoader(filePathOrUrl);
     case "json":
-      return new JSONLoader(filePath);
+      return new JSONLoader(filePathOrUrl);
     case "txt":
-      return new TextLoader(filePath);
+      return new TextLoader(filePathOrUrl);
     case "pdf":
-      return new PDFLoader(filePath);
+      return new PDFLoader(filePathOrUrl);
     case "doc":
-      return new DocxLoader(filePath, {
+      return new DocxLoader(filePathOrUrl, {
         type: "doc",
       });
     case "docx":
-      return new DocxLoader(filePath);
+      return new DocxLoader(filePathOrUrl);
     case "pptx":
-      return new PPTXLoader(filePath);
+      return new PPTXLoader(filePathOrUrl);
     case "epub":
-      return new EPubLoader(filePath);
+      return new EPubLoader(filePathOrUrl);
     default:
       throw new Error(`Unsupported file type: ${fileExtension}`);
   }
