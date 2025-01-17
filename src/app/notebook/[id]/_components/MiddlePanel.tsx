@@ -32,14 +32,17 @@ function MiddlePanel({ notebookId }: Props) {
   return (
     <div className="p-2">
       {data && (
-        <div className="flex min-h-[200px] w-full items-center justify-between rounded-lg border p-5 text-sm">
-          <div>
-            <span className="block flex text-2xl">{notebook.title}</span>
-            <div>{notebook.summary || "summary"}</div>
+        <div className="flex flex-col justify-between rounded-lg border">
+          <div className="flex min-h-[200px] w-full items-center justify-between p-5 text-sm">
+            <div className="flex flex-col gap-3">
+              <span className="text-2xl">{notebook.title}</span>
+              <div>{notebook.summary || "summary"}</div>
+            </div>
+            <div className="relative bottom-0">
+              <DocumentSource notebookId={notebook.id} />
+            </div>
           </div>
-          <div className="relative bottom-0">
-            <DocumentSource notebookId={notebook.id} />
-          </div>
+          <div className="p-2">bottom panel</div>
         </div>
       )}
     </div>
