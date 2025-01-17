@@ -1,11 +1,9 @@
 "use server";
 
 import { embeddings, llm} from "@/lib/ollama";
-import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
 import { ChatPromptTemplate, PromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
-
 import { config, recordManager} from "@/lib/pg-vector-config";
 import { PGVectorStore } from "@langchain/community/vectorstores/pgvector";
 import { pull } from "langchain/hub";
