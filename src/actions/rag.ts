@@ -85,7 +85,7 @@ export async function indexDocument(id:string, filePath: string) {
   const docs = await loader.load();
 
   const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 500,
+    chunkSize: 1000,
     chunkOverlap: 200,
   });
 

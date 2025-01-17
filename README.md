@@ -1,3 +1,5 @@
+# Google notebooklm clone project
+
 
 - Embedding
   - https://docs.together.ai/docs/embeddings-overview
