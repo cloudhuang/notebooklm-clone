@@ -13,6 +13,7 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { index } from "langchain/indexes";
 import { Document } from "@langchain/core/documents";
 import { updateDocumentSummary } from "@/actions/document";
+import { getLoader } from "@/lib/loader";
 
 export async function summarizeText(docs: Document[]) {
   const prompt = PromptTemplate.fromTemplate(
@@ -31,7 +32,7 @@ export async function summarizeText(docs: Document[]) {
 }
 
 export async function summarizeDocument(filePath: string) {
-  const loader = new PDFLoader(filePath);
+  const loader = await getLoader(filePath);
 
   const docs = await loader.load();
 
@@ -76,10 +77,10 @@ export async function query(text: string) {
   });
 }
 
-export async function indexDocument(id:string, path: string) {
+export async function indexDocument(id:string, filePath: string) {
   await recordManager.createSchema();
 
-  const loader = new PDFLoader(path);
+  const loader = await getLoader(filePath);
 
   const docs = await loader.load();
 
